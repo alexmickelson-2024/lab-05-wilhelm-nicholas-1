@@ -28,7 +28,7 @@ namespace MainProgram
                 WriteLine($"currentPlayer={currentPlayer}; turn={turn}");
                 WriteLine("Current Board: ");
                 DisplayBoard(board);
-                board = MakeMove(currentPlayer, board);
+                MakeMove(currentPlayer, board);
                 if (HasWinner(board))
                 {
                     winner = currentPlayer;
@@ -70,10 +70,12 @@ namespace MainProgram
          */
 
         //GetMove
-        /* given a string to prompt the user for input, get a cell.
-         * The user must enter a single character, 'a' through 'i', that's it.
-         * Verify the cell is valid (e.g. it is in the board, and no one has played there yet).         
-         * return the index of the cell the player selected (if they want 'a' you'd return 0)
+        /* Receive the following as parameters: 1) a string to prompt the user for input, 2) a copy of the board
+         *   The user must enter a single character, 'a' through 'i', that's it.
+         *   Verify the cell is valid (e.g. it is in the board, and no one has played there yet).   
+         *   Also, you'll probably have a loop in here in case the user selects a cell that another player 
+         *   already picked.  You'll need to ask again for them to pick another cell.      
+         * Return: the index of the cell the player selected (if they want 'a' you'd return 0)
         */
 
         //HasWinner
@@ -85,19 +87,15 @@ namespace MainProgram
         // described below
 
         //bool CellsAreTheSame(char a, char b, char c);
-        /**
+        /*
          *  returns true if a, b, and c are all the same
          */
 
         //MakeMove
-        /**
-         * Call GetMove("Where do you want to play?") until player selects an unused cell.
+        /* Receive the current player and the board as a parameter.
+         * Call GetMove($"Player {currentPlayer}: Where do you want to play?").
          * Update the board at that index with the current player's symbol.
          */
-        //hint: you'll want to pass in the board so that you can change it; 
-        // also, you'll probably have a loop in here in case the user selects a 
-        // cell that another player already picked.  You'll need to ask again for them to
-        // pick another cell.
         
 
     }
