@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.Marshalling;
 using static System.Console;
 
 namespace MainProgram
@@ -42,9 +43,9 @@ namespace MainProgram
             {
                 WriteLine("\n/----------------\\");
                 WriteLine($"|     X wins!    |");
-                WriteLine("\\----------------/");                
+                WriteLine("\\----------------/");
             }
-            else if(winner == 'O')
+            else if (winner == 'O')
             {
                 WriteLine("\n/----------------\\");
                 WriteLine($"|     O wins!    |");
@@ -52,7 +53,7 @@ namespace MainProgram
             }
             else
             {
-                WriteLine("Looks like a draw");                
+                WriteLine("Looks like a draw");
             }
         }
 
@@ -68,7 +69,14 @@ namespace MainProgram
          * ---+---+--
          *  g | h | i
          */
-
+        public static void DisplayBoard(char[] board)
+        {
+            Console.WriteLine($" {board[0]} | {board[1]} | {board[2]}");
+            Console.WriteLine("---+---+---");
+            Console.WriteLine($" {board[3]} | {board[4]} | {board[5]}");
+            Console.WriteLine("---+---+---");
+            Console.WriteLine($" {board[6]} | {board[7]} | {board[8]}");
+        }
         //GetMove
         /* Receive the following as parameters: 1) a string to prompt the user for input, 2) a copy of the board
          *   The user must enter a single character, 'a' through 'i', that's it.
@@ -77,7 +85,45 @@ namespace MainProgram
          *   already picked.  You'll need to ask again for them to pick another cell.      
          * Return: the index of the cell the player selected (if they want 'a' you'd return 0)
         */
+        public static int GetMove(string prompt, char[] board)
+        {
+            Console.WriteLine(prompt);
+            while (true)
+            {
 
+                int userInput = Convert.ToChar(Console.ReadLine()) - 97;
+                if (userInput >= 0 && userInput <= 8)
+                {
+                    if ((int)board[userInput] == (userInput + 97))
+                    {
+                        return userInput;
+                    }
+                    else
+                    {
+                        Console.WriteLine("invalid input,already picked!");
+                    }
+                }
+                Console.WriteLine("Pick a letter between a and i");
+            }
+        }
+        //bool CellsAreTheSame(char a, char b, char c);
+        /*
+         *  returns true if a, b, and c are all the same
+         */
+        public static bool CellsAreTheSame(char a, char b, char c)
+        {
+            return a == b && b == c;
+        }
+        //MakeMove
+        /* Receive the current player and the board as a parameter.
+         * Call GetMove($"Player {currentPlayer}: Where do you want to play?").
+         * Update the board at that index with the current player's symbol.
+         */
+        public static void MakeMove(char currentPlayer, char[] board)
+        {
+            int index = GetMove($"Player {currentPlayer}: Where do you want to play?", board);
+            board[index] = currentPlayer;
+        }
         //HasWinner
         /* given the board,
          * returns true if the board has a winner (8 possibilities: horizontal, vertical, or diagonal)
@@ -85,18 +131,48 @@ namespace MainProgram
         // hint: just return true if you can find three-in-a-row
         // of any character; consider writing the function 'CellsAreTheSame'
         // described below
-
-        //bool CellsAreTheSame(char a, char b, char c);
-        /*
-         *  returns true if a, b, and c are all the same
-         */
-
-        //MakeMove
-        /* Receive the current player and the board as a parameter.
-         * Call GetMove($"Player {currentPlayer}: Where do you want to play?").
-         * Update the board at that index with the current player's symbol.
-         */
-        
-
+        public static bool HasWinner(char[] board)
+        {
+            if(CellsAreTheSame(board[0],board[1],board[2]))
+            {
+                return true;
+            }
+            else if(CellsAreTheSame(board[3],board[4],board[5]))
+            {
+                return true;
+            }
+            else if(CellsAreTheSame(board[6],board[7],board[8]))
+            {
+                return true;
+            }
+            else if(CellsAreTheSame(board[0],board[3],board[6]))
+            {
+                return true;
+            }
+            else if(CellsAreTheSame(board[1],board[4],board[7]))
+            {
+                return true;
+            }
+            else if(CellsAreTheSame(board[2],board[5],board[8]))
+            {
+                return true;
+            }
+            else if(CellsAreTheSame(board[0],board[4],board[8]))
+            {
+                return true;
+            }
+            else if(CellsAreTheSame(board[2],board[4],board[6]))
+            {
+                return true;
+            }
+            return false;
+        }
     }
+
+
+
+
+
+
 }
+
